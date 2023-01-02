@@ -3,10 +3,15 @@ import React, { useState } from 'react'
 
 const Todo = () => {
   const [inputItem, setInputItem] = useState();
-  const [addItem, setAddItem] = useState();
+  const [addItem, setAddItem] = useState([]);
 
   function addItemInTheList() {
-    setAddItem(inputItem);
+    if (inputItem) {
+      setAddItem([...addItem, inputItem]);
+    }
+    else {
+      alert("Fill the data first.")
+    }
   }
 
   return (
@@ -23,13 +28,20 @@ const Todo = () => {
         </div>
 
         <div className="showList">
-          <div className="item">
-            <h3>{addItem}</h3>
-            <div className="two-buttons">
-              <button>edit</button>
-              <button>delete</button>
-            </div>
-          </div>
+          {
+            addItem.map((currElem, i) => {
+              return (
+                <div className="item" key={i}>
+                  <h3>{currElem}</h3>
+                  <div className="two-buttons">
+                    <button>edit</button>
+                    <button>delete</button>
+                  </div>
+                </div>
+              )
+            })
+          }
+
         </div>
         <div className="clear-btn">
           <button>Clear All</button>
