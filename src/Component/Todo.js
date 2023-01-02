@@ -2,16 +2,29 @@ import React, { useState } from 'react'
 
 
 const Todo = () => {
-  const [inputItem, setInputItem] = useState();
-  const [addItem, setAddItem] = useState([]);
+  const [inputItem, setInputItem] = useState("");
+  const [allItems, setAllItems] = useState([]);
 
   function addItemInTheList() {
     if (inputItem) {
-      setAddItem([...addItem, inputItem]);
+      const newInputItem = {
+        id: new Date().getTime().toString(),
+        name: inputItem
+      }
+      setAllItems([...allItems, newInputItem]);
+      setInputItem("")
     }
     else {
       alert("Fill the data first.")
     }
+  }
+
+  function deleteItem(removeThisId) {
+    // console.log(removeThisId)
+    const updatedItems = allItems.filter((currElem) => {
+      return removeThisId !== currElem.id;
+    })
+    setAllItems(updatedItems)
   }
 
   return (
@@ -29,13 +42,13 @@ const Todo = () => {
 
         <div className="showList">
           {
-            addItem.map((currElem, i) => {
+            allItems.map((currElem) => {
               return (
-                <div className="item" key={i}>
-                  <h3>{currElem}</h3>
+                <div className="item" key={currElem.id}>
+                  <h3>{currElem.name}</h3>
                   <div className="two-buttons">
                     <button>edit</button>
-                    <button>delete</button>
+                    <button onClick={() => deleteItem(currElem.id)}>delete</button>
                   </div>
                 </div>
               )
