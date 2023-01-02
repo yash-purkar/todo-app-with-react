@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 
-
 const Todo = () => {
   const [inputItem, setInputItem] = useState("");
   const [allItems, setAllItems] = useState([]);
@@ -19,13 +18,35 @@ const Todo = () => {
     }
   }
 
+  // Delete
   function deleteItem(removeThisId) {
     // console.log(removeThisId)
     const updatedItems = allItems.filter((currElem) => {
       return removeThisId !== currElem.id;
     })
-    setAllItems(updatedItems)
+    setAllItems(updatedItems);
+    setInputItem("");
+
   }
+
+
+  // Clear all items
+  function clearAll() {
+    if (allItems.length > 0) {
+
+      setAllItems([]);
+      setTimeout(() => {
+        alert("data cleared succesfully")
+      }, 100);
+    }
+
+    else {
+      alert("Nothing to clear")
+    }
+  }
+
+
+
 
   return (
     <div className='main-div'>
@@ -47,18 +68,18 @@ const Todo = () => {
                 <div className="item" key={currElem.id}>
                   <h3>{currElem.name}</h3>
                   <div className="two-buttons">
-                    <button>edit</button>
                     <button onClick={() => deleteItem(currElem.id)}>delete</button>
                   </div>
                 </div>
               )
             })
           }
+        </div>
 
-        </div>
         <div className="clear-btn">
-          <button>Clear All</button>
+          <button onClick={clearAll}>Clear All</button>
         </div>
+
       </div>
     </div>
   )
