@@ -1,8 +1,21 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import "./styles.css";
+import logo from './img/logo.svg';
+import { ToastContainer, toast, Flip, Zoom, Slide } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Todo = () => {
   const [inputItem, setInputItem] = useState("");
   const [allItems, setAllItems] = useState([]);
+
+  const warning = (msg) => toast.warning(msg, {
+    position: "top-center",
+  });
+
+  const success = (msg) => toast.success(msg, {
+    position: "top-center",
+  })
 
   function addItemInTheList() {
     if (inputItem) {
@@ -11,10 +24,11 @@ const Todo = () => {
         name: inputItem
       }
       setAllItems([...allItems, newInputItem]);
-      setInputItem("")
+      setInputItem("");
+      success("Item Added");
     }
     else {
-      alert("Fill the data first.")
+      warning("Fill the data first!");
     }
   }
 
@@ -26,6 +40,7 @@ const Todo = () => {
     })
     setAllItems(updatedItems);
     setInputItem("");
+    success("Item Deleted")
 
   }
 
@@ -36,12 +51,12 @@ const Todo = () => {
 
       setAllItems([]);
       setTimeout(() => {
-        alert("data cleared succesfully")
+        success("All Cleared!");
       }, 100);
     }
 
     else {
-      alert("Nothing to clear")
+      warning("Nothing to clear")
     }
   }
 
@@ -52,13 +67,13 @@ const Todo = () => {
     <div className='main-div'>
       <div className="child-div">
         <figure>
-          <img src="" alt="" />
+          <img src={logo} alt="logo" id='logo' />
           <figcaption>Add Your List Here✍</figcaption>
         </figure>
 
         <div className="inputDiv">
-          <input type="text" value={inputItem} onChange={(e) => setInputItem(e.target.value)} />
-          <button onClick={addItemInTheList}>+</button>
+          <input type="text" value={inputItem} onChange={(e) => setInputItem(e.target.value)} id="input" placeholder='Add Your List...' maxlength="25" />
+          <button id='addBtn' onClick={addItemInTheList}>+</button>
         </div>
 
         <div className="showList">
@@ -66,10 +81,8 @@ const Todo = () => {
             allItems.map((currElem) => {
               return (
                 <div className="item" key={currElem.id}>
-                  <h3>{currElem.name}</h3>
-                  <div className="two-buttons">
-                    <button onClick={() => deleteItem(currElem.id)}>delete</button>
-                  </div>
+                  <p className='data'>{currElem.name}</p>
+                  <button onClick={() => deleteItem(currElem.id)} className="delete">delete</button>
                 </div>
               )
             })
@@ -81,6 +94,7 @@ const Todo = () => {
         </div>
 
       </div>
+      <ToastContainer autoClose={200} transition={Flip} />
     </div>
   )
 }
